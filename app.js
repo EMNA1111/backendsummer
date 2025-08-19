@@ -10,7 +10,8 @@ require('dotenv').config()
 const {connecttoMongoDB} = require("./config/db")
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/userRouter');
+
 
 
 var app = express();
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -48,15 +50,18 @@ const PORT = process.env.PORT || 5000;
 
 const server = http.createServer(app);
 
-server.listen(PORT, () => {
-  // Appelle la connexion MongoDB et attend la promesse
-  connecttoMongoDB()
-    .then(() => {
-      console.log("connect to db"); // s'affiche après connexion
-    })
-    .catch((err) => {
-      console.log("Erreur MongoDB :", err);
-    });
+// Fonction pour démarrer le serveur après connexion à MongoDB
+const startServer = async () => {
+  try {
+    await connecttoMongoDB(); // attend la connexion MongoDB
+    console.log(" Connected to MongoDB");
 
-  console.log("app is running on port 5000");
-});
+    server.listen(PORT, () => {
+      console.log(` App running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error(" MongoDB connection failed:", err);
+  }
+};
+
+startServer();
