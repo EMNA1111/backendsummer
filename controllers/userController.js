@@ -147,6 +147,33 @@ module.exports.searchUsersByName = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+module.exports.addClientWithFile = async (req, res) => {
+  try {
+    const userData = { ...req.body };
+
+    if (req.file) {
+      const { filename } = req.file;
+      userData.image_User = filename;
+      userData.role = 'client';
+    }
+
+    // (optionnel) validation business avant sauvegarde DB
+    // si tu détectes un conflit, pense à nettoyer puis répondre
+    // if (await userModel.exists({ email: userData.email })) {
+    //   await cleanupUploadedFile(req.file);
+    //   return res.status(409).json({ message: 'Email déjà utilisé' });
+    // }
+
+    const client = new userModel(userData);
+    const addedUser = await client.save();
+    return res.status(201).json(addedUser);
+  } catch (error) {
+    // IMPORTANT : nettoyer le fichier si uploadé
+    await cleanupUploadedFile(req.file);
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 
 
 
