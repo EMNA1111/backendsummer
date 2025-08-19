@@ -1,22 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const os = require('os')
-/* GET home page. */
-router.get('/getosInformation', function(req, res, next) {
-    try{
-       const osInformation = {
-        hostname : os.hostname(),
-        platform : os.platform(),
-        type : os.type(),
-        release : os.release()
-       }
-       console.log(osInformation)
+const osController = require('../controllers/osController');
 
-       res.status(200).json("getosInformation")
-    }catch(erreur){
-        res.status(500).json({message:error.message})
-    }
- 
-});
+/* GET OS information */
+router.get('/', osController.getOsInformation); // Changé de '/getOsInformation' à '/'
 
 module.exports = router;
