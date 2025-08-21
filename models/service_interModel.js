@@ -2,19 +2,18 @@ const mongoose = require("mongoose");
 
 const serviceInterSchema = new mongoose.Schema(
   {
-    typeService: {  // Exemple: "Ménage", "Babysitting", "Aide aux personnes âgées"
+    typeService: {  
+      type: String,  
+    },
+    description: {  
       type: String,
       
     },
-    description: {  // Exemple: "2h de ménage complet", "Garde enfant de 3 ans"
-      type: String,
-      
-    },
-    prix: {   // Tarif horaire ou forfait
+    prix: {  
       type: Number,
       required: true,
     },
-    disponibilite: {   // Exemple: "Lundi au Vendredi, 8h-18h"
+    disponibilite: {   
       type: String,
       required: false,
     },

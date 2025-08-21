@@ -5,19 +5,19 @@ const abonnementSchema = new mongoose.Schema(
     tarif: {
       type: Number,
       required: true,
-      min: 0, // tarif ne peut pas être négatif
+      
     },
     type: {
       type: String,
       required: true,
-      enum: ["mensuel", "trimestriel", "annuel"], // tu peux changer/ajouter les types possibles
+      enum: ["mensuel", "trimestriel", "annuel"], 
     },
-    isActive: { type: Boolean, default: true }, // abonnement actif ou pas
-    isDeleted: { type: Boolean, default: false }, // logique de soft delete
+    isActive: { type: Boolean, default: true }, 
+    isDeleted: { type: Boolean, default: false }, 
   },
   { timestamps: true }
 );
-// Création du modèle
+
 const Abonnement = mongoose.model("Abonnement", abonnementSchema);
 module.exports = Abonnement;
 

@@ -15,6 +15,9 @@ var abonnementRouter = require('./routes/abonnementRouter');
 var paiementRouter = require('./routes/paiementRouter');
 var reservationRouter = require('./routes/reservationRouter');
 var serviceInterRouter = require('./routes/service_interRouter');
+var factureRouter = require('./routes/factureRouter.js');
+var categorieRouter = require('./routes/categorieRouter.js');
+var reclamationRouter = require('./routes/reclamationRouter.js');
 
 
 var app = express();
@@ -35,6 +38,9 @@ app.use('/abonnements', abonnementRouter);
 app.use('/paiements', paiementRouter);
 app.use('/reservations', reservationRouter);
 app.use('/service_inter', serviceInterRouter);
+app.use('/factures', factureRouter);
+app.use('/categories', categorieRouter);
+app.use('/reclamations', reclamationRouter);
 
 
 // catch 404 and forward to error handler

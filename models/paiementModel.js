@@ -5,12 +5,12 @@ const paiementSchema = new mongoose.Schema(
     modePaiement: { 
       type: String, 
       required: true, 
-      enum: ["carte", "paypal", "virement"] // adapte selon tes besoins
+      enum: ["carte", "paypal", "virement"] 
     },
     statutPaiement: { 
       type: String, 
       required: true, 
-      enum: ["en_attente", "effectué", "échoué"], // adapte selon tes besoins
+      enum: ["en_attente", "effectué", "échoué"], 
       default: "en_attente"
     }
   },

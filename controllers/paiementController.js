@@ -1,6 +1,6 @@
 const Paiement = require('../models/paiementModel.js');
 
-// Récupérer tous les paiements
+
 module.exports.getAllPaiements = async (req, res) => {
   try {
     const paiements = await Paiement.find();
@@ -10,7 +10,8 @@ module.exports.getAllPaiements = async (req, res) => {
   }
 };
 
-// Ajouter un paiement
+
+
 module.exports.addPaiement = async (req, res) => {
   try {
     const { modePaiement, statutPaiement } = req.body;

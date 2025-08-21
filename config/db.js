@@ -10,5 +10,12 @@ module.exports.connecttoMongoDB = async () => {
 
 
 
-//username:emna61
-//mdp:lxYCz30fhpHt92Lh
+
+
+//username:emna
+//mdp:OgTcKGSkNbjJHGg6
+//mongodb+srv://emna:OgTcKGSkNbjJHGg6@cluster0.tvxozdx.mongodb.net/
+
+
+
+

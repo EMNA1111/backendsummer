@@ -46,15 +46,15 @@ module.exports.deleteServiceInterById = async (req, res) => {
     const id = req.params.id;
 
     // Vérifier si le service existe
-    const checkIfServiceExists = await ServiceInter.findById(id);
-    if (!checkIfServiceExists) {
-      throw new Error("ServiceInter not Found !");
+    const checkIfExists = await serviceInterModel.findById(id);
+    if (!checkIfExists || checkIfExists.isDeleted) {
+      throw new Error("ServiceInter non trouvé !");
     }
 
-    // Supprimer
-    await ServiceInter.findByIdAndDelete(id);
+    // Supprimer le service
+    await serviceInterModel.findByIdAndDelete(id);
 
-    res.status(200).json("ServiceInter deleted");
+    res.status(200).json("ServiceInter supprimé");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
