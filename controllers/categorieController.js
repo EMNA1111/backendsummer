@@ -44,3 +44,17 @@ module.exports.deleteCategorieById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+module.exports.updateCategorie = async (req, res) => {
+  try {
+    //logique
+    const id = req.params.id;
+    const { description } = req.body;
+    const updatedCategorie = await Categorie.findByIdAndUpdate(id, {
+      $set: { description },
+    });
+    //const categorie = new categorieModel(req.body)
+    res.status(200).json(updatedCategorie);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

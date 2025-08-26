@@ -173,6 +173,21 @@ module.exports.addClientWithFile = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+module.exports.updateUser = async (req, res) => {
+  try {
+    //logique
+    const id = req.params.id;
+    const { username, age } = req.body;
+    const updatedUser = await userModel.findByIdAndUpdate(id, {
+      $set: { username, age },
+    });
+    //const client = new userModel(req.body)
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 
 

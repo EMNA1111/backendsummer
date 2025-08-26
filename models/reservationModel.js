@@ -7,7 +7,9 @@ const reservationSchema = new mongoose.Schema(
       enum: ["en_attente", "confirmée", "annulée"], 
       default: "en_attente" 
     },
-    isDeleted: { type: Boolean, default: false }
+    isDeleted: { type: Boolean, default: false },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
   },
   { timestamps: true }
 );

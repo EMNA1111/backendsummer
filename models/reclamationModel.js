@@ -6,7 +6,7 @@ const reclamationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    statut: {   
+    statut: {
       type: String,
       enum: ["en_attente", "traitée", "résolue"],
       default: "en_attente",
@@ -15,6 +15,8 @@ const reclamationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
   },
   { timestamps: true }
 );

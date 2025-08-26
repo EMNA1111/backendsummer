@@ -14,8 +14,9 @@ const factureSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    paiement: { type: mongoose.Schema.Types.ObjectId, ref: "Paiement", required: true },
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 

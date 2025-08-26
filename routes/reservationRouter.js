@@ -10,5 +10,9 @@ router.post('/addReservation', reservationController.addReservation);
 
 
 router.delete('/deleteReservationById/:id', reservationController.deleteReservationById);
+router.put("/updateReservation/:id", reservationController.updateReservation);
+// Ajouter une réservation avec un utilisateur
+router.post("/addReservationWithUser", reservationController.addReservationWithUser);
+
 
 module.exports = router;

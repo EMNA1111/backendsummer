@@ -45,3 +45,46 @@ module.exports.deleteFactureById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// Récupérer une facture par ID
+module.exports.getFactureById = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const facture = await Facture.findById(id); // 👈 utilise bien "factureModel"
+
+    if (!facture) {
+      return res.status(404).json({ message: "Facture non trouvée" });
+    }
+
+    res.status(200).json({ facture });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// Récupérer les factures triées par montant (ordre croissant)
+module.exports.getOrderFactureByMontant = async (req, res) => {
+  try {
+    
+    const factureList = await Facture.find({ isDeleted: false }).sort({ montant: 1 });
+
+    res.status(200).json({ factureList });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+module.exports.updateFacture = async (req, res) => {
+  try {
+    //logique
+    const id = req.params.id;
+    const { nomClient, montant } = req.body;
+    const updatedFacture = await Facture.findByIdAndUpdate(id, {
+      $set: { nomClient, montant },
+    });
+    //const facture = new factureModel(req.body)
+    res.status(200).json(updatedFacture);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
