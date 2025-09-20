@@ -13,7 +13,8 @@ const paiementSchema = new mongoose.Schema(
       enum: ["en_attente", "effectué", "échoué"],
       default: "en_attente"
     },
-    factures: [{ type: mongoose.Schema.Types.ObjectId, ref: "Facture" }]
+    factures: [{ type: mongoose.Schema.Types.ObjectId, ref: "Facture" }],
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );

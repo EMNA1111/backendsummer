@@ -8,9 +8,5 @@ router.get('/getAllReclamations', reclamationController.getAllReclamations);
 router.delete('/deleteReclamationById/:id', reclamationController.deleteReclamationById);
 router.get("/getReclamationById/:id", reclamationController.getReclamationById);
 router.put("/updateReclamation/:id", reclamationController.updateReclamation);
-// Ajouter une réclamation avec un utilisateur
 router.post("/addReclamationWithUser", reclamationController.addReclamationWithUser);
-
-
-
 module.exports = router;

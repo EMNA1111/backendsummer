@@ -2,7 +2,7 @@ const serviceInterModel = require('../models/service_interModel.js');
 
 module.exports.getAllServiceInter = async (req, res) => {
   try {
-    // logique
+    
     const services = await serviceInterModel.find({ isDeleted: false });
     res.status(200).json({ services });
   } catch (error) {
@@ -12,7 +12,7 @@ module.exports.getAllServiceInter = async (req, res) => {
 
 module.exports.getServiceInterById = async (req, res) => {
   try {
-    // logique
+    
     const id = req.params.id;
     const service = await serviceInterModel.findById(id);
 
@@ -95,7 +95,9 @@ module.exports.addServiceWithUser = async (req, res) => {
       typeService,
       description,
       prix,
-      disponibilite
+      disponibilite,
+      user: userID
+      
     });
 
     const savedService = await newService.save();

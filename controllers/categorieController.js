@@ -58,3 +58,48 @@ module.exports.updateCategorie = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const User = require("../models/userModel");
+
+module.exports.addCategorieWithUser = async (req, res) => {
+  try {
+    const { typeIntervenant, description, userID } = req.body;
+
+    // Vérifier que l'utilisateur existe
+    const user = await User.findById(userID);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Utilisateur non trouvé",
+        error: "Utilisateur non trouvé",
+      });
+    }
+
+    // Créer la catégorie
+    const newCategorie = new Categorie({
+      typeIntervenant,
+      description,
+      user: userID
+    });
+
+    const savedCategorie = await newCategorie.save();
+
+    // Ajouter la catégorie à l'utilisateur
+    user.categories.push(savedCategorie._id);
+    await user.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Catégorie créée avec succès",
+      data: savedCategorie
+    });
+
+  } catch (error) {
+    console.error("Erreur lors de la création de la catégorie:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Erreur lors de la création de la catégorie",
+      error: error.message
+    });
+  }
+};

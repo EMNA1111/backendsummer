@@ -25,7 +25,10 @@ const userSchema = new mongoose.Schema(
     abonnements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Abonnement" }],
     reclamations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reclamation" }],
     reservations: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reservation" }],
-    services: [{ type: mongoose.Schema.Types.ObjectId, ref: "serviceInter" }]
+    services: [{ type: mongoose.Schema.Types.ObjectId, ref: "serviceInter" }],
+    categories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Categorie" }],
+    paiements: [{ type: mongoose.Schema.Types.ObjectId, ref: "Paiement" }],
+
 
 
 
@@ -44,6 +47,28 @@ userSchema.pre("save", async function (next) {
     next(error);
   }
 });
+userSchema.statics.login = async function (email,password) {
+  try {
+    const user = await this.findOne({email})
+    if(user){
+      const auth = await bcrypt.compare(password,user.password)
+      if(auth){
+        // if(user.etat == false){
+        //   throw new Error("compte desactive");          
+        // }
+        // if(user.ban == false){
+        //   throw new Error("compte banned");          
+        // }
+        return user
+      }
+      throw new Error("incorrect password");      
+    }
+    throw new Error("incorrect email");
+    
+  } catch (error) {
+    throw new Error("probleme login");    
+  }
+}
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

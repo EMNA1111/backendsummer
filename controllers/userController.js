@@ -187,8 +187,113 @@ module.exports.updateUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+module.exports.addIntervenantDomicile = async (req, res) => {
+  try {
+    // récupérer les infos du body
+    const { username, email, password, age } = req.body;
+    console.log("req.body", req.body);
 
+    // rôle spécifique
+    const role = "intervenant_domicile";
 
+    // créer un intervenant
+    const intervenant = new userModel({
+      username,
+      email,
+      password,
+      age,
+      role,
+    });
+
+    // sauvegarder dans la base
+    const addedUser = await intervenant.save();
+
+    res.status(200).json(addedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+module.exports.addIntervenantWithAdmin = async (req, res) => {
+  try {
+    const { username, email, password, age, adminId } = req.body;
+
+    // Vérifier que l'admin existe et est bien un admin
+    const admin = await userModel.findById(adminId);
+    if (!admin || admin.role !== "admin") {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Admin non trouvé ou invalide" 
+      });
+    }
+
+    // Créer le nouvel intervenant
+    const intervenant = new userModel({
+      username,
+      email,
+      password,
+      age,
+      role: "intervenant_domicile",
+      admin: admin._id
+    });
+
+    const savedIntervenant = await intervenant.save();
+
+    // Ajouter l'intervenant à la liste de l'admin
+    await userModel.findByIdAndUpdate(admin._id, {
+      $push: { intervenants: savedIntervenant._id }
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Intervenant ajouté avec succès et lié à l'admin",
+      data: savedIntervenant
+    });
+
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de l'intervenant:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Erreur serveur",
+      error: error.message
+    });
+  }
+};
+const jwt = require('jsonwebtoken')
+
+const maxAge = 1 * 60 * 60 // 1 Min
+
+const createToken = (id) =>{
+  return jwt.sign({id},"net 9antra secret",{expiresIn: maxAge})
+}
+
+module.exports.login = async (req, res) => {
+  try {
+    //logique
+    const {email , password} = req.body
+    const User = await userModel.login(email,password)
+
+    const token = createToken(User._id)
+    console.log(token)
+
+    res.cookie('jwt_Token',token,{httpOnly: false,maxAge: maxAge * 1000})
+
+    res.status(200).json({ message:'User successfully authenticated',user:User , token : token });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports.logout = async (req, res) => {
+  try {
+    //logique
+
+    res.cookie('jwt_Token','',{ httpOnly: false,maxAge: 1})
+
+    res.status(200).json({ message:'User successfully logged out' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
 
